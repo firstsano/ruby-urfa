@@ -1,0 +1,2 @@
+class UrfaclientException < Exception
+end
