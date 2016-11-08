@@ -13,6 +13,10 @@ describe UrfaclientPacket do
       double: {
         string: "test string",
         value: 2.3556924101843323e+251
+      },
+      long: {
+        string: "test string",
+        value: 8387236823645254770
       }
     }
   end
@@ -25,6 +29,10 @@ describe UrfaclientPacket do
     it 'can unpack to double/float' do
       float = packet.bin2double @urfa_binary[:double][:string]
       expect(float).to eq(@urfa_binary[:double][:value])
+    end
+    it 'can unpack to long' do
+      long = packet.bin2long @urfa_binary[:long][:string]
+      expect(long).to eq(@urfa_binary[:long][:value])
     end
   end
 end
