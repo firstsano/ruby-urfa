@@ -48,6 +48,11 @@ class UrfaclientPacket
     @len += 12
   end
 
+  def data_get_double
+    @iterator += 1
+    bin2double @data[@iterator - 1]
+  end
+
   private
 
   def value_greater_than_32bit_integer?(value)
