@@ -28,6 +28,10 @@ class UrfaclientPacket
     end
   end
 
+  def clean
+    @code, @len, @iterator, @attr, @data = 0, 4, 0, [], []
+  end
+
   private
 
   def value_greater_than_32bit_integer?(value)
