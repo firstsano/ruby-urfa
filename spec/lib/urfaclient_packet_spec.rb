@@ -4,7 +4,6 @@ require "rspec/its"
 
 describe UrfaclientPacket do
   subject(:packet) { UrfaclientPacket.new }
-  let(:packet_class) { UrfaclientPacket }
   before(:all) do
     @urfa_binary = {
       int: {
@@ -23,8 +22,8 @@ describe UrfaclientPacket do
   end
 
   it 'should have attributes with default values' do
-    expect(packet_class).to have_attributes(version: 35, iterator: 0, attr: [], sock: false, data: [])
-    expect(packet_class).to respond_to(:code, :len)
+    expect(packet).to have_attributes(version: 35, iterator: 0, attr: [], sock: false, data: [])
+    expect(packet).to respond_to(:code, :len)
   end
 
   context 'unpacking binary string' do

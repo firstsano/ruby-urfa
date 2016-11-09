@@ -1,7 +1,15 @@
 class UrfaclientPacket
+
+  attr_accessor :version, :code, :len, :iterator, :attr, :sock, :data
+
+  def initialize
+    @version, @iterator, @attr, @sock, @data = 35, 0, [], false, []
+  end
+
   def bin2int(string)
     string.unpack("N*").first
   end
+
   def bin2double(string)
     string.reverse.unpack("d*").first
   end
