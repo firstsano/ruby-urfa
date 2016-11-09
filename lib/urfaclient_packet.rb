@@ -1,3 +1,5 @@
+require "ipaddr"
+
 class UrfaclientPacket
 
   VERSION = 35
@@ -51,6 +53,11 @@ class UrfaclientPacket
   def data_get_double
     @iterator += 1
     bin2double @data[@iterator - 1]
+  end
+
+  def data_set_ip_address(ip)
+    @data << [IPAddr.new(ip).to_i].pack("N")
+    @len += 8
   end
 
   private
