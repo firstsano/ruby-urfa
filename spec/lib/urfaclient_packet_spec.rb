@@ -4,47 +4,21 @@ require "rspec/its"
 
 describe UrfaclientPacket do
   subject(:packet) { UrfaclientPacket.new }
-  before(:all) do
-    @urfa_binary = {
-      int: {
-        string: "test",
-        value: 1_952_805_748
-      },
-      double: {
-        string: "test string",
-        value: 2.3556924101843323e+251
-      },
-      long: {
-        string: "test string",
-        value: 8_387_236_823_645_254_770
-      }
-    }
-  end
 
   it 'should have attributes with default values' do
     expect(packet).to have_attributes(iterator: 0, attr: [], sock: false, data: [])
     expect(packet).to respond_to(:code, :len)
   end
-
-  context 'unpacking binary string' do
-    it 'can unpack to integer' do
-      integer = packet.bin2int @urfa_binary[:int][:string]
-      expect(integer).to eq(@urfa_binary[:int][:value])
-    end
-    it 'can unpack to double/float' do
-      float = packet.bin2double @urfa_binary[:double][:string]
-      expect(float).to eq(@urfa_binary[:double][:value])
-    end
-    it 'can unpack to long' do
-      long = packet.bin2long @urfa_binary[:long][:string]
-      expect(long).to eq(@urfa_binary[:long][:value])
-    end
-  end
 end
 
 context "methods" do
   subject(:packet) { UrfaclientPacket.new }
-  let(:string) { "test_string" }
+  let(:binary_string) { "test str" }
+  let(:binary_integer)  { 1_952_805_748 }
+  let(:binary_double)  { 4.914662893768959e+252 }
+  let(:binary_long)  { 8_387_236_823_645_254_770 }
+  let(:offset_string) { 4 }
+  let(:offset_double) { 12 }
 
   describe "UrfaclientPacket#clean" do
     before(:example) do
@@ -60,18 +34,47 @@ context "methods" do
     end
   end
 
+  describe "UrfaclientPacket#bin2int" do
+    it 'should unpack binary string to integer' do
+      integer = packet.bin2int binary_string
+      expect(integer).to eq(binary_integer)
+    end
+  end
+
+  describe "UrfaclientPacket#bin2double" do
+    it 'should unpack binary string to double/float' do
+      float = packet.bin2double binary_string
+      expect(float).to eq(binary_double)
+    end
+  end
+
+  describe "UrfaclientPacket#bin2long" do
+    it 'should unpack binary string to long' do
+      long = packet.bin2long binary_string
+      expect(long).to eq(binary_long)
+    end
+  end
+
   describe "UrfaclientPacket#data_set_string" do
     it 'should push string to data and increment length' do
-      packet.data_set_string string
-      expect(packet.data).to eq([string])
-      expect(packet.len).to eq(string.length + 4)
+      packet.data_set_string binary_string
+      expect(packet.data.first).to eq(binary_string)
+      expect(packet.len).to eq(binary_string.length + offset_string)
     end
   end
 
   describe "UrfaclientPacket#data_get_string" do
     it 'should get string from data' do
-      packet.data_set_string string
-      expect(packet.data_get_string).to eq(string)
+      packet.data_set_string binary_string
+      expect(packet.data_get_string).to eq(binary_string)
+    end
+  end
+
+  describe "UrfaclientPacket#data_set_double" do
+    it 'should add double as string and increment length' do
+      packet.data_set_double binary_double
+      expect(packet.data.first).to eq(binary_string)
+      expect(packet.len).to eq(offset_double)
     end
   end
 end
