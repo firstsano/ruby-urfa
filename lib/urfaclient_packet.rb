@@ -38,6 +38,11 @@ class UrfaclientPacket
     @len += string.length + 4
   end
 
+  def data_get_string
+    @iterator += 1
+    @data[@iterator - 1]
+  end
+
   private
 
   def value_greater_than_32bit_integer?(value)
