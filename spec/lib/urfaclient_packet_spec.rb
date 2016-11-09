@@ -8,7 +8,7 @@ describe UrfaclientPacket do
     @urfa_binary = {
       int: {
         string: "test",
-        value: 1952805748
+        value: 1_952_805_748
       },
       double: {
         string: "test string",
@@ -16,7 +16,7 @@ describe UrfaclientPacket do
       },
       long: {
         string: "test string",
-        value: 8387236823645254770
+        value: 8_387_236_823_645_254_770
       }
     }
   end
