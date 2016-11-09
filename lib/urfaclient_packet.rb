@@ -1,10 +1,10 @@
 class UrfaclientPacket
 
-  attr_reader :version
+  VERSION = 35
   attr_accessor :code, :len, :iterator, :attr, :sock, :data
 
   def initialize
-    @version, @iterator, @attr, @sock, @data = 35, 0, [], false, []
+    @iterator, @attr, @sock, @data = 0, [], false, []
   end
 
   def bin2int(string)
