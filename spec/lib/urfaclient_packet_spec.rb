@@ -42,27 +42,29 @@ describe UrfaclientPacket do
   end
 end
 
-describe "UrfaclientPacket#clean" do
-  subject(:packet) do
-    packet = UrfaclientPacket.new
-    packet.code = rand(100)
-    packet.len = rand(100)
-    packet.iterator = rand(100)
-    packet.attr = rand(100).times.map { rand(100) }
-    packet.data = rand(100).times.map { rand(100) }
-    packet
-  end
-  it 'should reset instance variables' do
-    packet.clean
-    expect(packet).to have_attributes(code: 0, len: 4, iterator: 0, attr: [], data: [])
-  end
-end
-
-describe "UrfaclientPacket#data_set_string" do
+context do
   subject(:packet) { UrfaclientPacket.new }
-  it 'should push string to data and increment length' do
-    packet.data_set_string "test_string"
-    expect(packet.data).to eql(["test_string"])
-    expect(packet.len).to eq("test_string".length + 4)
+
+  describe "UrfaclientPacket#clean" do
+    before(:example) do
+      packet.code = rand(100)
+      packet.len = rand(100)
+      packet.iterator = rand(100)
+      packet.attr = rand(100).times.map { rand(100) }
+      packet.data = rand(100).times.map { rand(100) }
+    end
+    it 'should reset instance variables' do
+      packet.clean
+      expect(packet).to have_attributes(code: 0, len: 4, iterator: 0, attr: [], data: [])
+    end
+  end
+
+  describe "UrfaclientPacket#data_set_string" do
+    let(:string) { "test_string" }
+    it 'should push string to data and increment length' do
+      packet.data_set_string string
+      expect(packet.data).to eql([string])
+      expect(packet.len).to eq(string.length + 3)
+    end
   end
 end
