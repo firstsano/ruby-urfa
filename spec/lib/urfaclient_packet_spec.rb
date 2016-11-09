@@ -77,4 +77,11 @@ context "methods" do
       expect(packet.len).to eq(offset_double)
     end
   end
+
+  describe "UrfaclientPacket#data_get_double" do
+    it 'should get double from data' do
+      packet.data_set_double binary_double
+      expect(packet.data_get_double).to eq(binary_double)
+    end
+  end
 end
