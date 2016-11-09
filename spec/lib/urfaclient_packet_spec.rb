@@ -41,3 +41,19 @@ describe UrfaclientPacket do
     end
   end
 end
+
+describe "UrfaclientPacket#clean" do
+  subject(:packet) do
+    packet = UrfaclientPacket.new
+    packet.code = rand(100)
+    packet.len = rand(100)
+    packet.iterator = rand(100)
+    packet.attr = rand(100).times.map { rand(100) }
+    packet.data = rand(100).times.map { rand(100) }
+    packet
+  end
+  it 'should reset instance variables' do
+    packet.clean
+    expect(packet).to have_attributes(code: 0, len: 4, iterator: 0, attr: [], data: [])
+  end
+end
