@@ -42,8 +42,9 @@ describe UrfaclientPacket do
   end
 end
 
-context do
+context "methods" do
   subject(:packet) { UrfaclientPacket.new }
+  let(:string) { "test_string" }
 
   describe "UrfaclientPacket#clean" do
     before(:example) do
@@ -60,11 +61,17 @@ context do
   end
 
   describe "UrfaclientPacket#data_set_string" do
-    let(:string) { "test_string" }
     it 'should push string to data and increment length' do
       packet.data_set_string string
-      expect(packet.data).to eql([string])
-      expect(packet.len).to eq(string.length + 3)
+      expect(packet.data).to eq([string])
+      expect(packet.len).to eq(string.length + 4)
+    end
+  end
+
+  describe "UrfaclientPacket#data_get_string" do
+    it 'should get string from data' do
+      packet.data_set_string string
+      expect(packet.data_get_string).to eq(string)
     end
   end
 end
