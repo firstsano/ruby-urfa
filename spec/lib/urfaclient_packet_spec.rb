@@ -71,7 +71,7 @@ context "methods" do
   end
 
   describe "UrfaclientPacket#data_set_double" do
-    it 'should add double as string and increment length' do
+    it 'should push double as string to data and increment length' do
       packet.data_set_double binary_double
       expect(packet.data.first).to eq(binary_string)
       expect(packet.len).to eq(offset_double)
