@@ -1,6 +1,7 @@
 class UrfaclientPacket
 
-  attr_accessor :version, :code, :len, :iterator, :attr, :sock, :data
+  attr_reader :version
+  attr_accessor :code, :len, :iterator, :attr, :sock, :data
 
   def initialize
     @version, @iterator, @attr, @sock, @data = 35, 0, [], false, []
