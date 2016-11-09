@@ -43,6 +43,11 @@ class UrfaclientPacket
     @data[@iterator - 1]
   end
 
+  def data_set_double(double)
+    @data << [double].pack("d").reverse
+    @len += 12
+  end
+
   private
 
   def value_greater_than_32bit_integer?(value)
