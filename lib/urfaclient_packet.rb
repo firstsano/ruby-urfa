@@ -8,11 +8,11 @@ class UrfaclientPacket
   end
 
   def bin2int(string)
-    string.unpack("N*").first
+    string.unpack("N").first
   end
 
   def bin2double(string)
-    string.reverse.unpack("d*").first
+    string.reverse.unpack("d").first
   end
 
   def bin2long(string)
