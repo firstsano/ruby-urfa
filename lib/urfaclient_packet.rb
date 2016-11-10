@@ -70,6 +70,11 @@ class UrfaclientPacket
     @len += 8
   end
 
+  def data_get_int
+    @iterator += 1
+    bin2int @data[@iterator - 1]
+  end
+
   private
 
   def long2ip(long)
