@@ -122,7 +122,10 @@ describe UrfaclientPacket do
     end
 
     describe "UrfaclientPacket#data_get_int" do
-
+      it 'should get integer from data' do
+        packet.data_set_int urfaclient.string.to_integer
+        expect(packet.data_get_int).to eq(urfaclient.string.to_integer)
+      end
     end
   end
 end
