@@ -15,6 +15,7 @@ describe UrfaclientPacket do
       RecursiveOpenStruct.new({
         string: {
           value: "test str",
+          unpacked_value: "test",
           to_integer: 1_952_805_748,
           to_double: 4.914662893768959e+252,
           to_long: 8_387_236_823_645_254_770
@@ -25,6 +26,7 @@ describe UrfaclientPacket do
         },
         offset: {
           string: 4,
+          integer: 8,
           long: 8,
           double: 12
         }
@@ -114,7 +116,7 @@ describe UrfaclientPacket do
     describe "UrfaclientPacket#data_set_int" do
       it 'should push integer as string and increment length' do
         packet.data_set_int urfaclient.string.to_integer
-        expect(packet.data.first).to eq(urfaclient.string.value)
+        expect(packet.data.first).to eq(urfaclient.string.unpacked_value)
         expect(packet.len).to eq(urfaclient.offset.integer)
       end
     end

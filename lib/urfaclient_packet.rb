@@ -65,6 +65,11 @@ class UrfaclientPacket
     long2ip(bin2int(@data[@iterator - 1]) & 0xFFFFFFFF)
   end
 
+  def data_set_int(integer)
+    @data << [integer].pack("N")
+    @len += 8
+  end
+
   private
 
   def long2ip(long)
