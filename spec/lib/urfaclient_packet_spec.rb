@@ -110,5 +110,17 @@ describe UrfaclientPacket do
         expect(packet.data_get_ip_address).to eq(urfaclient.ip.value)
       end
     end
+
+    describe "UrfaclientPacket#data_set_int" do
+      it 'should push integer as string and increment length' do
+        packet.data_set_int urfaclient.string.to_integer
+        expect(packet.data.first).to eq(urfaclient.string.value)
+        expect(packet.len).to eq(urfaclient.offset.integer)
+      end
+    end
+
+    describe "UrfaclientPacket#data_get_int" do
+
+    end
   end
 end
