@@ -127,5 +127,14 @@ describe UrfaclientPacket do
         expect(packet.data_get_int).to eq(urfaclient.string.to_integer)
       end
     end
+
+    describe "UrfaclientPacket#data_get_long" do
+      before(:example) do
+        packet.data << urfaclient.string.value
+      end
+      it 'should get long from data' do
+        expect(packet.data_get_long).to eq(urfaclient.string.to_long)
+      end
+    end
   end
 end
