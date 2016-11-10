@@ -60,7 +60,21 @@ class UrfaclientPacket
     @len += 8
   end
 
+  def data_get_ip_address
+    @iterator += 1
+    long2ip(bin2int(@data[@iterator - 1]) & 0xFFFFFFFF)
+  end
+
   private
+
+  def long2ip(long)
+    ip = []
+    4.times do |i|
+      ip.push(long.to_i & 255)
+      long = long.to_i >> 8
+    end
+    ip.reverse.join(".")
+  end
 
   def value_greater_than_32bit_integer?(value)
     (value & 0x80000000) != 0
