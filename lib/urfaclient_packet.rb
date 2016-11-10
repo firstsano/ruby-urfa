@@ -21,9 +21,9 @@ class UrfaclientPacket
     hi, lo = string.unpack("N2")
     cut_32bit_integer(lo) if value_greater_than_32bit_integer?(lo)
     if value_greater_than_32bit_integer?(hi)
-      hi &= 0xffffffff
-      hi ^= 0xffffffff
-      lo ^= 0xffffffff
+      hi &= 0xFFFFFFFF
+      hi ^= 0xFFFFFFFF
+      lo ^= 0xFFFFFFFF
       lo -= 1;
       0 - hi * 4_294_967_296 - lo
     else
@@ -67,6 +67,6 @@ class UrfaclientPacket
   end
 
   def cut_32bit_integer(value)
-    value & 0xffffffff
+    value & 0xFFFFFFFF
   end
 end
