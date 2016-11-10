@@ -103,5 +103,12 @@ describe UrfaclientPacket do
         expect(packet.len).to eq(urfaclient.offset.long)
       end
     end
+
+    describe "UrfaclientPacket#data_get_ip_address" do
+      it 'should get ip from data' do
+        packet.data_set_ip_address urfaclient.ip.value
+        expect(packet.data_get_ip_address).to eq(urfaclient.ip.value)
+      end
+    end
   end
 end
