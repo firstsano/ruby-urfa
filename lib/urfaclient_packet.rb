@@ -88,6 +88,13 @@ class UrfaclientPacket
     false
   end
 
+  def attr_set_int(attribute, code)
+    @attr[code]['data'] = [attribute].pack("N")
+    @attr[code]['len'] = 8
+    @len += 8
+    self
+  end
+
   private
 
   def long2ip(long)
