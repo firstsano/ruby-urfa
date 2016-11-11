@@ -5,9 +5,12 @@ class UrfaclientPacket
   VERSION = 35
   attr_accessor :code, :len, :iterator, :attr, :sock, :data
 
-  def initialize
+  def initialize(socket)
     @sock = false
     clean
+    unless socket
+      raise "wrong socket"
+    end
   end
 
   def bin2int(string)

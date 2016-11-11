@@ -3,14 +3,24 @@ require "rspec/its"
 require "recursive-open-struct"
 
 describe UrfaclientPacket do
-  subject(:packet) { UrfaclientPacket.new }
+  let(:socket) { Object.new }
+
+  it 'should throw error on creation without socket' do
+    expect{ UrfaclientPacket.new }.to raise_error(ArgumentError)
+  end
+
+  it 'should throw error on creation with empty socket' do
+    expect{ UrfaclientPacket.new(nil) }.to raise_exception("wrong socket")
+  end
 
   it 'should have attributes with default values' do
+    packet = UrfaclientPacket.new socket
     expect(packet).to have_attributes(iterator: 0, attr: {}, sock: false, data: [])
     expect(packet).to respond_to(:code, :len)
   end
 
   describe "methods" do
+    subject(:packet) { UrfaclientPacket.new(socket) }
     let(:urfaclient) do
       RecursiveOpenStruct.new({
         string: {
