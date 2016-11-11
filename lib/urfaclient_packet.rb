@@ -95,6 +95,13 @@ class UrfaclientPacket
     self
   end
 
+  def attr_set_string(attribute, code)
+    @attr[code]['data'] = attribute
+    @attr[code]['len'] = 4
+    @len += 4
+    self
+  end
+
   private
 
   def long2ip(long)
