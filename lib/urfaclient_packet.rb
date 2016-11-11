@@ -6,7 +6,8 @@ class UrfaclientPacket
   attr_accessor :code, :len, :iterator, :attr, :sock, :data
 
   def initialize
-    @iterator, @len, @sock, @data, @attr = 0, 0, false, [], []
+    @iterator, @len, @sock, @data = 0, 0, false, []
+    @attr = attr_hash
   end
 
   def bin2int(string)
@@ -32,7 +33,8 @@ class UrfaclientPacket
   end
 
   def clean
-    @code, @len, @iterator, @attr, @data = 0, 4, 0, [], []
+    @code, @len, @iterator,@data = 0, 4, 0, []
+    @attr = attr_hash
   end
 
   def data_set_string(string)
@@ -81,7 +83,7 @@ class UrfaclientPacket
   end
 
   def attr_get_int(code)
-    @attr[code]['data']
+    bin2int @attr[code]['data']
   rescue
     false
   end
@@ -103,5 +105,9 @@ class UrfaclientPacket
 
   def cut_32bit_integer(value)
     value & 0xFFFFFFFF
+  end
+
+  def attr_hash
+    Hash.new { |h, k| h[k] = Hash.new(&h.default_proc) }
   end
 end

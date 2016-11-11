@@ -6,7 +6,7 @@ describe UrfaclientPacket do
   subject(:packet) { UrfaclientPacket.new }
 
   it 'should have attributes with default values' do
-    expect(packet).to have_attributes(iterator: 0, attr: [], sock: false, data: [])
+    expect(packet).to have_attributes(iterator: 0, attr: {}, sock: false, data: [])
     expect(packet).to respond_to(:code, :len)
   end
 
@@ -46,7 +46,7 @@ describe UrfaclientPacket do
       end
       it 'should reset instance variables' do
         packet.clean
-        expect(packet).to have_attributes(code: 0, len: 4, iterator: 0, attr: [], data: [])
+        expect(packet).to have_attributes(code: 0, len: 4, iterator: 0, attr: {}, data: [])
       end
     end
 
@@ -143,6 +143,12 @@ describe UrfaclientPacket do
     describe "UrfaclientPacket#attr_get_int" do
       it 'should return false if no data in attr' do
         expect(packet.attr_get_int urfaclient.code.value).to be_falsey
+      end
+
+      it 'should get integer from attr and unpack it' do
+        code = urfaclient.code.value
+        packet.attr[code]['data'] = urfaclient.string.value
+        expect(packet.attr_get_int code).to eq(urfaclient.string.to_integer)
       end
     end
   end
