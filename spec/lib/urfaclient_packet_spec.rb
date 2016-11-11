@@ -20,6 +20,9 @@ describe UrfaclientPacket do
           to_double: 4.914662893768959e+252,
           to_long: 8_387_236_823_645_254_770
         },
+        code: {
+          value: rand(100),
+        },
         ip: {
           value: "10.0.2.15",
           to_long: "\n\x00\x02\x0F"
@@ -139,7 +142,7 @@ describe UrfaclientPacket do
 
     describe "UrfaclientPacket#attr_get_int" do
       it 'should return false if no data in attr' do
-        expect(packet.attr_get_int).to be_false
+        expect(packet.attr_get_int urfaclient.code.value).to be_falsey
       end
     end
   end
