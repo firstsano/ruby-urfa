@@ -162,7 +162,7 @@ describe UrfaclientPacket do
 
     describe "UrfaclientPacket#attr_set_string" do
       it 'should set data as string to attr and increment length' do
-        packet.attr_set_int(urfaclient.string.value, urfaclient.code.value)
+        packet.attr_set_string(urfaclient.string.value, urfaclient.code.value)
         expect(packet.attr[urfaclient.code.value]['data']).to eq(urfaclient.string.value)
         expect(packet.attr[urfaclient.code.value]['len']).to eq(urfaclient.offset.string)
         expect(packet.len).to eq(urfaclient.offset.string)
