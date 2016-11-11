@@ -72,10 +72,13 @@ describe UrfaclientPacket do
     end
 
     describe "UrfaclientPacket#data_set_string" do
-      it 'should push string to data and increment length' do
+      it 'should push string to data' do
         packet.data_set_string urfaclient.string.value
         expect(packet.data.first).to eq(urfaclient.string.value)
-        expect(packet.len).to eq(urfaclient.string.value.length + urfaclient.offset.string)
+      end
+
+      it 'should increment length' do
+        expect{ packet.data_set_string urfaclient.string.value }.to change{ packet.len }.by(urfaclient.string.value.length + urfaclient.offset.string)
       end
     end
 
@@ -87,10 +90,13 @@ describe UrfaclientPacket do
     end
 
     describe "UrfaclientPacket#data_set_double" do
-      it 'should push double as string to data and increment length' do
+      it 'should push double as string to data' do
         packet.data_set_double urfaclient.string.to_double
         expect(packet.data.first).to eq(urfaclient.string.value)
-        expect(packet.len).to eq(urfaclient.offset.double)
+      end
+
+      it 'should increment length' do
+        expect{ packet.data_set_double urfaclient.string.to_double }.to change{ packet.len }.by(urfaclient.offset.double)
       end
     end
 
@@ -102,10 +108,13 @@ describe UrfaclientPacket do
     end
 
     describe "UrfaclientPacket#data_set_ip_address" do
-      it 'should push ip as long to data and increment length' do
+      it 'should push ip as long to data' do
         packet.data_set_ip_address urfaclient.ip.value
         expect(packet.data.first).to eq(urfaclient.ip.to_long)
-        expect(packet.len).to eq(urfaclient.offset.long)
+      end
+
+      it 'should increment length' do
+        expect{ packet.data_set_ip_address urfaclient.ip.value }.to change{ packet.len }.by(urfaclient.offset.long)
       end
     end
 
@@ -117,10 +126,13 @@ describe UrfaclientPacket do
     end
 
     describe "UrfaclientPacket#data_set_int" do
-      it 'should push integer as string and increment length' do
+      it 'should push integer as string to data' do
         packet.data_set_int urfaclient.string.to_integer
         expect(packet.data.first).to eq(urfaclient.string.unpacked_value)
-        expect(packet.len).to eq(urfaclient.offset.integer)
+      end
+
+      it 'should increment length' do
+        expect{ packet.data_set_int urfaclient.string.to_integer }.to change{ packet.len }.by(urfaclient.offset.integer)
       end
     end
 
@@ -152,20 +164,26 @@ describe UrfaclientPacket do
     end
 
     describe "UrfaclientPacket#attr_set_int" do
-      it 'should set data as binary string to attr and increment length' do
+      it 'should set integer as binary string to attr' do
         packet.attr_set_int(urfaclient.string.to_integer, urfaclient.code.value)
         expect(packet.attr[urfaclient.code.value]['data']).to eq(urfaclient.string.unpacked_value)
         expect(packet.attr[urfaclient.code.value]['len']).to eq(urfaclient.offset.integer)
-        expect(packet.len).to eq(urfaclient.offset.integer)
+      end
+
+      it 'should increment length' do
+        expect{ packet.attr_set_int(urfaclient.string.to_integer, urfaclient.code.value) }.to change{ packet.len }.by(urfaclient.offset.integer)
       end
     end
 
     describe "UrfaclientPacket#attr_set_string" do
-      it 'should set data as string to attr and increment length' do
+      it 'should set data as binary string to attr' do
         packet.attr_set_string(urfaclient.string.value, urfaclient.code.value)
         expect(packet.attr[urfaclient.code.value]['data']).to eq(urfaclient.string.value)
         expect(packet.attr[urfaclient.code.value]['len']).to eq(urfaclient.offset.string)
-        expect(packet.len).to eq(urfaclient.offset.string)
+      end
+
+      it 'should increment length' do
+        expect{ packet.attr_set_string(urfaclient.string.value, urfaclient.code.value) }.to change{ packet.len }.by(urfaclient.offset.string)
       end
     end
   end

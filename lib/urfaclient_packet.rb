@@ -6,8 +6,8 @@ class UrfaclientPacket
   attr_accessor :code, :len, :iterator, :attr, :sock, :data
 
   def initialize
-    @iterator, @len, @sock, @data = 0, 0, false, []
-    @attr = attr_hash
+    @sock = false
+    clean
   end
 
   def bin2int(string)
@@ -33,7 +33,7 @@ class UrfaclientPacket
   end
 
   def clean
-    @code, @len, @iterator,@data = 0, 4, 0, []
+    @code, @len, @iterator, @data = 0, 4, 0, []
     @attr = attr_hash
   end
 
