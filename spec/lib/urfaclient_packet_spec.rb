@@ -136,5 +136,11 @@ describe UrfaclientPacket do
         expect(packet.data_get_long).to eq(urfaclient.string.to_long)
       end
     end
+
+    describe "UrfaclientPacket#attr_get_int" do
+      it 'should return false if no data in attr' do
+        expect(packet.attr_get_int).to be_false
+      end
+    end
   end
 end
