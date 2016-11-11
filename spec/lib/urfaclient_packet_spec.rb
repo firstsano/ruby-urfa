@@ -15,7 +15,7 @@ describe UrfaclientPacket do
 
   it 'should have attributes with default values' do
     packet = UrfaclientPacket.new socket
-    expect(packet).to have_attributes(iterator: 0, attr: {}, sock: false, data: [])
+    expect(packet).to have_attributes(iterator: 0, attr: {}, sock: socket, data: [])
     expect(packet).to respond_to(:code, :len)
   end
 
