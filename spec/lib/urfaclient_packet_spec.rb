@@ -152,11 +152,20 @@ describe UrfaclientPacket do
     end
 
     describe "UrfaclientPacket#attr_set_int" do
-      it 'should set data as binary to attr and increment length' do
+      it 'should set data as binary string to attr and increment length' do
         packet.attr_set_int(urfaclient.string.to_integer, urfaclient.code.value)
         expect(packet.attr[urfaclient.code.value]['data']).to eq(urfaclient.string.unpacked_value)
         expect(packet.attr[urfaclient.code.value]['len']).to eq(urfaclient.offset.integer)
         expect(packet.len).to eq(urfaclient.offset.integer)
+      end
+    end
+
+    describe "UrfaclientPacket#attr_set_string" do
+      it 'should set data as string to attr and increment length' do
+        packet.attr_set_int(urfaclient.string.value, urfaclient.code.value)
+        expect(packet.attr[urfaclient.code.value]['data']).to eq(urfaclient.string.value)
+        expect(packet.attr[urfaclient.code.value]['len']).to eq(urfaclient.offset.string)
+        expect(packet.len).to eq(urfaclient.offset.string)
       end
     end
   end
