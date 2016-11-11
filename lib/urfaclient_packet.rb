@@ -6,11 +6,9 @@ class UrfaclientPacket
   attr_accessor :code, :len, :iterator, :attr, :sock, :data
 
   def initialize(socket)
-    @sock = false
+    raise "wrong socket" unless socket
     clean
-    unless socket
-      raise "wrong socket"
-    end
+    @sock = socket
   end
 
   def bin2int(string)
