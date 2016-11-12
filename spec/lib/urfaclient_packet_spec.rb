@@ -60,6 +60,12 @@ describe UrfaclientPacket do
       end
     end
 
+    describe "UrfaclientPacket#parse_packet_data" do
+      it 'should read and put some data to attr' do
+        expect{ packet.parse_packet_data }.to change{ packet.attr }
+      end
+    end
+
     describe "UrfaclientPacket#bin2int" do
       it 'should unpack binary string to integer' do
         integer = packet.bin2int urfaclient.string.value
