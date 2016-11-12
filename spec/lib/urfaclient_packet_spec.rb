@@ -60,6 +60,18 @@ describe UrfaclientPacket do
       end
     end
 
+    describe "UrfaclientPacket#read" do
+      context 'should read from socket and' do
+        it 'should raise exception on version mismatch' do
+          expect{ packet.read }.to raise_error
+        end
+        it 'should call parse_packet_data' do
+          packet.parse_packet_data
+          expect(packet).to receive(:parse_packet_data)
+        end
+      end
+    end
+
     describe "UrfaclientPacket#parse_packet_data" do
       it 'should read and put some data to attr' do
         expect{ packet.parse_packet_data }.to change{ packet.attr }
