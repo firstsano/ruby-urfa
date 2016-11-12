@@ -72,6 +72,10 @@ describe UrfaclientPacket do
       end
     end
 
+    describe "UrfaclientPacket#write" do
+      it 'should write to socket some data'
+    end
+
     describe "UrfaclientPacket#parse_packet_data" do
       it 'should read and put some data to attr' do
         expect{ packet.parse_packet_data }.to change{ packet.attr }
