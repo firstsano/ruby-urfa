@@ -123,6 +123,16 @@ class UrfaclientPacket
     end
   end
 
+  def read
+    @code = @socket.recvfrom(1).ord
+    if VERSION != @socket.recvfrom(1).ord
+      raise "Error code " + @socket.recvfrom(1).ord
+    else
+      @len = @socket.recvfrom(2).unpack("n")[1]
+      parse_packet_data
+    end
+  end
+
   private
 
   def long2ip(long)
