@@ -103,6 +103,26 @@ class UrfaclientPacket
     self
   end
 
+  def parse_packet_data
+    tmp_len = 4
+    while tmp_len < @len
+      code = @socket.recvfrom(2).unpack("s")[1]
+      length = @socket.recvfrom(2).unpack("n")[1]
+      tmp_len += length
+      data = if (length == 4)
+        nil
+      else
+        @socket.recvfrom(length - 4)
+      end
+      if code == 5
+        @data << data
+      else
+        @attr[code]['data'] = data
+        @attr[code]['len'] = length
+      end
+    end
+  end
+
   private
 
   def long2ip(long)
