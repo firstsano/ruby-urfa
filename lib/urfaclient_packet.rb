@@ -133,6 +133,22 @@ class UrfaclientPacket
     end
   end
 
+  def write
+    @socket.write @code.chr
+    @socket.write VERSION.chr
+    @socket.write [@len].pack("n")
+    @attr.each do |code, value|
+      @socket.write [code].pack("v")
+      @socket.write [value['len']].pack("n")
+      @socket.write value['data']
+    end
+    @data.each do |code, value|
+      @socket.write [5].pack("v")
+      @socket.write [value.size + 4].pack("n")
+      @socket.write value
+    end
+  end
+
   private
 
   def long2ip(long)
