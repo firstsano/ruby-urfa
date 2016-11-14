@@ -69,12 +69,21 @@ describe UrfaclientPacket do
     end
 
     describe "UrfaclientPacket#write" do
-      it 'should write to socket some data'
+      it 'should write to socket some data' do
+        expect(socket).to receive(:write).at_least(:twice)
+        packet.write
+      end
     end
 
     describe "UrfaclientPacket#parse_packet_data" do
       it 'should read and put some data to attr' do
-        expect{ packet.parse_packet_data }.to change{ packet.attr }
+        length_greater_than_4 = 12
+        information_length = 12
+        packet.len = information_length
+        allow(packet).to receive(:read_short_signed)
+        allow(packet).to receive(:read_long_number).and_return(length_greater_than_4)
+        expect(socket).to receive(:read)
+        packet.parse_packet_data
       end
     end
 

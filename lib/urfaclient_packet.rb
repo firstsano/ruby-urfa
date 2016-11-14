@@ -105,19 +105,16 @@ class UrfaclientPacket
   def parse_packet_data
     tmp_len = 4
     while tmp_len < @len
-      code = @socket.recvfrom(2).unpack("s")[1]
-      length = @socket.recvfrom(2).unpack("n")[1]
-      tmp_len += length
-      data = if (length == 4)
-        nil
-      else
-        @socket.recvfrom(length - 4)
+      code, len = read_short_signed, read_long_number
+      tmp_len += len
+      data = if (len != 4)
+        @sock.read(len - 4)
       end
       if code == 5
         @data << data
       else
         @attr[code]['data'] = data
-        @attr[code]['len'] = length
+        @attr[code]['len'] = len
       end
     end
   end
@@ -133,22 +130,48 @@ class UrfaclientPacket
   end
 
   def write
-    @socket.write @code.chr
-    @socket.write VERSION.chr
-    @socket.write [@len].pack("n")
+    write_char(@code, VERSION)
+    write_short_unsigned_big_endian(@len)
     @attr.each do |code, value|
-      @socket.write [code].pack("v")
-      @socket.write [value['len']].pack("n")
-      @socket.write value['data']
+      write_short_unsigned_little_endian code
+      write_short_unsigned_big_endian value['len']
+      write_raw value['data']
     end
-    @data.each do |code, value|
-      @socket.write [5].pack("v")
-      @socket.write [value.size + 4].pack("n")
-      @socket.write value
+    @data.each do |value|
+      write_short_unsigned_little_endian 5
+      write_short_unsigned_big_endian (value.size + 4)
+      write_raw value
     end
   end
 
   private
+
+  def write_socket(value)
+    @sock.write value
+  end
+
+  def write_raw(values)
+    [values].flatten.each do |v|
+      v = yield(v) if block_given?
+      write_socket v
+    end
+  end
+
+  def write_char(*values)
+    write_raw(values) { |v| v.chr }
+  end
+
+  def write_short_unsigned_big_endian(*values)
+    write_raw(values) { |v| [v].pack("n") }
+  end
+
+  def write_short_unsigned_little_endian(*values)
+    write_raw(values) { |v| [v].pack("v") }
+  end
+
+  def read_short_signed
+    @sock.read(2).unpack("s").second
+  end
 
   def read_long_number
     @sock.read(2).unpack("n").second
