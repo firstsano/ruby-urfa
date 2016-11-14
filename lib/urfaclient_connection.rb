@@ -1,0 +1,2 @@
+class UrfaclientConnection
+end
