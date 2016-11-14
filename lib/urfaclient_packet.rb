@@ -6,7 +6,6 @@ class UrfaclientPacket
   attr_accessor :code, :len, :iterator, :attr, :sock, :data
 
   def initialize(socket)
-    raise "wrong socket" unless socket
     clean
     @sock = socket
   end
@@ -124,11 +123,11 @@ class UrfaclientPacket
   end
 
   def read
-    @code = @socket.recvfrom(1).ord
-    if VERSION != @socket.recvfrom(1).ord
-      raise "Error code " + @socket.recvfrom(1).ord
+    @code = read_char_number
+    if VERSION != read_char_number
+      raise "Error code #{read_char_number}"
     else
-      @len = @socket.recvfrom(2).unpack("n")[1]
+      @len = read_long_number
       parse_packet_data
     end
   end
@@ -150,6 +149,14 @@ class UrfaclientPacket
   end
 
   private
+
+  def read_long_number
+    @sock.read(2).unpack("n").second
+  end
+
+  def read_char_number
+    @sock.read(1).ord
+  end
 
   def long2ip(long)
     ip = []

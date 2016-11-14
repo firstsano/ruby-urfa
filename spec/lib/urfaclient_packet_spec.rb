@@ -3,24 +3,16 @@ require "rspec/its"
 require "recursive-open-struct"
 
 describe UrfaclientPacket do
-  let(:socket) { Object.new }
-
-  it 'should throw error on creation without socket' do
-    expect{ UrfaclientPacket.new }.to raise_error(ArgumentError)
-  end
-
-  it 'should throw error on creation with empty socket' do
-    expect{ UrfaclientPacket.new(nil) }.to raise_exception("wrong socket")
-  end
+  subject(:packet) { UrfaclientPacket.new(socket) }
+  let(:socket) { instance_double("TCPSocket") }
+  let(:packet_version) { UrfaclientPacket::VERSION }
 
   it 'should have attributes with default values' do
-    packet = UrfaclientPacket.new socket
     expect(packet).to have_attributes(iterator: 0, attr: {}, sock: socket, data: [])
     expect(packet).to respond_to(:code, :len)
   end
 
   describe "methods" do
-    subject(:packet) { UrfaclientPacket.new(socket) }
     let(:urfaclient) do
       RecursiveOpenStruct.new({
         string: {
@@ -63,11 +55,15 @@ describe UrfaclientPacket do
     describe "UrfaclientPacket#read" do
       context 'should read from socket and' do
         it 'should raise exception on version mismatch' do
-          expect{ packet.read }.to raise_error
+          wrong_version_number = packet_version + 1
+          allow(packet).to receive(:read_char_number).and_return(wrong_version_number)
+          expect{ packet.read }.to raise_error("Error code #{wrong_version_number}")
         end
         it 'should call parse_packet_data' do
-          packet.parse_packet_data
+          allow(packet).to receive(:read_char_number).and_return(packet_version)
+          allow(packet).to receive(:read_long_number)
           expect(packet).to receive(:parse_packet_data)
+          packet.read
         end
       end
     end
