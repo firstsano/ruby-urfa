@@ -28,7 +28,28 @@ class UrfaclientConnection
     @socket.nil?
   end
 
-  def login(*args)
+  def login(login, pass, ssl = true)
+    packet = get_packet
+    until @socket.eof? do
+      packet.clean
+      packet.read
+      case packet.code
+      when 192
+        urfa_auth(packet, login, pass, ssl)
+      when 194
+        ssl = packet.attr_get_int(10)
+        ssl_connect(ssl) if ssl
+        return true
+      when 195
+        return false
+      end
+    end
+  end
+
+  def get_packet
+  end
+
+  def urfa_auth(*args)
   end
 
   private

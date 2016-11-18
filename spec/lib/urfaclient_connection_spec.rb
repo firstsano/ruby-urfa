@@ -1,3 +1,4 @@
+require "urfaclient_packet"
 require "urfaclient_connection"
 require "rspec/its"
 
@@ -33,17 +34,30 @@ describe UrfaclientConnection do
   end
 
   context "methods" do
-    subject(:connection) { UrfaclientConnection.new(auth.address, auth.port, auth.login, auth.pass) }
     let(:socket) { instance_double(TCPSocket) }
     let(:ssl_socket) { double("OpenSSL::SSL::SSLSocket", :sync_close= => true, :connect => true) }
+    let(:packet) { instance_double(UrfaclientPacket, clean: true, read: true, code: 192) }
+    subject(:connection) do
+      allow_any_instance_of(UrfaclientConnection).to receive(:get_packet).and_return(packet)
+      allow(TCPSocket).to receive(:open).and_return socket
+      allow(OpenSSL::SSL::SSLSocket).to receive(:new).and_return ssl_socket
+      allow(ssl_socket).to receive(:eof?).and_return(false, true)
+      UrfaclientConnection.new(auth.address, auth.port, auth.login, auth.pass)
+    end
 
     describe "UrfaclientConnection#open" do
       it 'should initialize socket of connection' do
-        allow(TCPSocket).to receive(:open).and_return socket
-        allow(OpenSSL::SSL::SSLSocket).to receive(:new).and_return ssl_socket
         expect(ssl_socket).to receive(:connect)
         connection.open(auth.address, auth.port)
         expect(connection.socket).not_to be_nil
+      end
+    end
+
+    describe "UrfaclientConnection#login" do
+      it 'should call urfa_auth on packet authorication code' do
+        allow(connection).to receive(:get_packet).and_return(packet)
+        expect(connection).to receive(:urfa_auth)
+        connection.login(auth.login, auth.pass)
       end
     end
 
