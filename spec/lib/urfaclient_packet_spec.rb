@@ -4,7 +4,7 @@ require "recursive-open-struct"
 
 describe UrfaclientPacket do
   subject(:packet) { UrfaclientPacket.new(socket) }
-  let(:socket) { instance_double("TCPSocket") }
+  let(:socket) { instance_double(TCPSocket) }
   let(:packet_version) { UrfaclientPacket::VERSION }
 
   it 'should have attributes with default values' do
