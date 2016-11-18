@@ -31,4 +31,26 @@ describe UrfaclientConnection do
       expect(connection).to be_an_instance_of(UrfaclientConnection)
     end
   end
+
+  context "methods" do
+    subject(:connection) { UrfaclientConnection.new(auth.address, auth.port, auth.login, auth.pass) }
+    let(:socket) { instance_double(TCPSocket) }
+    let(:ssl_socket) { double("OpenSSL::SSL::SSLSocket", :sync_close= => true, :connect => true) }
+
+    describe "UrfaclientConnection#open" do
+      it 'should initialize socket of connection' do
+        allow(TCPSocket).to receive(:open).and_return socket
+        allow(OpenSSL::SSL::SSLSocket).to receive(:new).and_return ssl_socket
+        expect(ssl_socket).to receive(:connect)
+        connection.open(auth.address, auth.port)
+        expect(connection.socket).not_to be_nil
+      end
+    end
+
+    describe "UrfaclientConnection#close" do
+      it 'should call close on socket' do
+        # expect(connection.socket).to receive(:close)
+      end
+    end
+  end
 end
