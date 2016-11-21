@@ -64,6 +64,7 @@ describe UrfaclientConnection do
     describe "UrfaclientConnection#close" do
       it 'should call close on socket' do
         expect(ssl_socket).to receive(:close)
+        connection.close
       end
     end
   end

@@ -52,6 +52,10 @@ class UrfaclientConnection
   def urfa_auth(*args)
   end
 
+  def close
+    @socket.close
+  end
+
   private
 
   def connection_error
