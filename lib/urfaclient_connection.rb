@@ -69,6 +69,27 @@ class UrfaclientConnection
     end
   end
 
+  def urfa_auth(packet, username, userpass, ssl)
+    ssl = if @admin
+      4
+    else
+      packet_data = packet.attr[6]['data']
+      digest = OpenSSL::Digest::MD5.new
+      digest << packet_data
+      digest << userpass
+      hash = digest.digest
+      packet.clean
+      packet.code = 193
+      packet.attr_set_string(username, 2)
+      packet.attr_set_string(packet_data, 8)
+      packet.attr_set_string(hash, 9)
+      packet.attr_set_int(2, 10)
+      packet.attr_set_int(2, 1)
+      packet.write
+      2
+    end
+  end
+
   def get_packet
     UrfaclientPacket.new(@socket)
   end
