@@ -52,6 +52,23 @@ class UrfaclientConnection
     @socket = OpenSSL::SSL::SSLSocket.new(@socket, ssl_context)
   end
 
+  def urfa_call(code)
+    packet = get_packet
+    packet.clean
+    packet.code = 201
+    packet.attr_set_int code, 3
+    packet.write
+    unless @socket.eof?
+      packet.clean
+      packet.read
+      case packet.code
+      when 200
+        return true if packet.attr_get_int(3) == code
+        return false
+      end
+    end
+  end
+
   def get_packet
     UrfaclientPacket.new(@socket)
   end
