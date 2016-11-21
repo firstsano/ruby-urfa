@@ -47,6 +47,11 @@ class UrfaclientConnection
     end
   end
 
+  def ssl_connect
+    ssl_context = OpenSSL::SSL::SSLContext.new(:SSLv23_client)
+    @socket = OpenSSL::SSL::SSLSocket.new(@socket, ssl_context)
+  end
+
   def get_packet
     UrfaclientPacket.new(@socket)
   end

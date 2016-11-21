@@ -69,6 +69,10 @@ describe UrfaclientConnection do
       end
     end
 
+    describe "UrfaclientConnection#ssl_connect" do
+      it 'should enable crypto'
+    end
+
     describe "UrfaclientConnection#close" do
       it 'should call close on socket' do
         expect(ssl_socket).to receive(:close)
