@@ -110,7 +110,9 @@ class UrfaclientConnection
     UrfaclientPacket.new(@socket)
   end
 
-  def urfa_auth(*args)
+  def urfa_send_param(packet)
+    packet.code = 200
+    packet.write
   end
 
   def close
