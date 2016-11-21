@@ -1,3 +1,4 @@
+require 'urfaclient_packet'
 require 'openssl'
 
 class UrfaclientConnection
@@ -47,6 +48,7 @@ class UrfaclientConnection
   end
 
   def get_packet
+    UrfaclientPacket.new(@socket)
   end
 
   def urfa_auth(*args)

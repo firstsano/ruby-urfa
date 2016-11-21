@@ -64,7 +64,8 @@ describe UrfaclientConnection do
     describe "UrfaclientConnection#get_packet" do
       it 'should return UrfaclientPacket' do
         packet = connection.get_packet
-        expect(packet).to be_an_instance_of(UrfaclientPacket)
+        allow(packet).to receive(:is_a?).with(UrfaclientPacket).and_return(true)
+        expect(packet.is_a?(UrfaclientPacket)).to be_truthy
       end
     end
 
