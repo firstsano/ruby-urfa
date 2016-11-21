@@ -61,6 +61,13 @@ describe UrfaclientConnection do
       end
     end
 
+    describe "UrfaclientConnection#get_packet" do
+      it 'should return UrfaclientPacket' do
+        packet = connection.get_packet
+        expect(packet).to be_an_instance_of(UrfaclientPacket)
+      end
+    end
+
     describe "UrfaclientConnection#close" do
       it 'should call close on socket' do
         expect(ssl_socket).to receive(:close)
