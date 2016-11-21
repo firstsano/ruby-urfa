@@ -90,6 +90,22 @@ class UrfaclientConnection
     end
   end
 
+  def urfa_get_data(data = false)
+    unless data
+      packet = get_packet
+      unless @socket.eof?
+        packet.clean
+        packet.read
+        case packet.code
+        when 200
+          # TODO: there may be problem cause 0 in PHP is false
+          packet_data = packet unless packet.attr_get_int(4)
+          return packet_data
+        end
+      end
+    end
+  end
+
   def get_packet
     UrfaclientPacket.new(@socket)
   end
