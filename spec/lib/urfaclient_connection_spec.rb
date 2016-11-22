@@ -3,6 +3,17 @@ require "urfaclient_connection"
 require "rspec/its"
 
 describe UrfaclientConnection do
+  def new_connection(params = {})
+    defaults = {
+      address: "127.0.0.1",
+      port: 80,
+      login: "test",
+      pass: "test"
+    }
+
+    UrfaclientConnection.new(**defaults.merge(params))
+  end
+
   let(:auth) do
     OpenStruct.new({ address: "127.0.0.1", port: 80, login: "test", pass: "test" })
   end
@@ -15,20 +26,20 @@ describe UrfaclientConnection do
     it 'should set error and return false on unsuccessful opening' do
       expect_any_instance_of(UrfaclientConnection).to receive(:open).and_return(false)
       expect_any_instance_of(UrfaclientConnection).to receive(:connection_error)
-      UrfaclientConnection.new(auth.address, auth.port, auth.login, auth.pass)
+      new_connection
     end
 
     it 'should set error on unsuccessful logging' do
       expect_any_instance_of(UrfaclientConnection).to receive(:open).and_return(true)
       expect_any_instance_of(UrfaclientConnection).to receive(:login).and_return(false)
       expect_any_instance_of(UrfaclientConnection).to receive(:login_error)
-      UrfaclientConnection.new(auth.address, auth.port, auth.login, auth.pass)
+      new_connection
     end
 
     it 'should successfully create object whe no errors' do
       expect_any_instance_of(UrfaclientConnection).to receive(:open).and_return(true)
       expect_any_instance_of(UrfaclientConnection).to receive(:login).and_return(true)
-      connection = UrfaclientConnection.new(auth.address, auth.port, auth.login, auth.pass)
+      new_connection
       expect(connection).to be_an_instance_of(UrfaclientConnection)
     end
   end
