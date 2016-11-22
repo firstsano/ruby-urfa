@@ -36,7 +36,7 @@ describe UrfaclientConnection do
   context "methods" do
     let(:socket) { instance_double(TCPSocket) }
     let(:ssl_socket) { double("OpenSSL::SSL::SSLSocket", ssl_version: :SSLv23_client, :sync_close= => true, :connect => true) }
-    let(:packet) { instance_double(UrfaclientPacket, clean: true, read: true, code: 192) }
+    let(:packet) { instance_double(UrfaclientPacket, clean: true, read: true, code: 192, is_a?: UrfaclientPacket) }
     subject(:connection) do
       allow_any_instance_of(UrfaclientConnection).to receive(:get_packet).and_return(packet)
       allow(TCPSocket).to receive(:open).and_return socket
@@ -64,7 +64,6 @@ describe UrfaclientConnection do
     describe "UrfaclientConnection#get_packet" do
       it 'should return UrfaclientPacket' do
         packet = connection.get_packet
-        allow(packet).to receive(:is_a?).with(UrfaclientPacket).and_return(true)
         expect(packet.is_a?(UrfaclientPacket)).to be_truthy
       end
     end
@@ -87,10 +86,6 @@ describe UrfaclientConnection do
 
     describe "UrfaclientConnection#urfa_get_data" do
       it 'should read data from packet'
-    end
-
-    describe "UrfaclientConnection#get_packet" do
-      it 'should instantiate UrfaclientPacket'
     end
 
     describe "UrfaclientConnection#urfa_send_param" do
