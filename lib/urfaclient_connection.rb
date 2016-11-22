@@ -7,6 +7,7 @@ class UrfaclientConnection
 
   CERTIFICATE = 'admin.crt'
   PASSPHRASE = 'netup'
+  SSL_VERSION = :SSLv23_client
 
   def initialize(address, port, login, pass, ssl = true, admin = false)
     @admin = admin
@@ -48,7 +49,7 @@ class UrfaclientConnection
   end
 
   def ssl_connect
-    ssl_context = OpenSSL::SSL::SSLContext.new(:SSLv23_client)
+    ssl_context = OpenSSL::SSL::SSLContext.new(SSL_VERSION)
     @socket = OpenSSL::SSL::SSLSocket.new(@socket, ssl_context)
   end
 

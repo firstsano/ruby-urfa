@@ -35,7 +35,7 @@ describe UrfaclientConnection do
 
   context "methods" do
     let(:socket) { instance_double(TCPSocket) }
-    let(:ssl_socket) { double("OpenSSL::SSL::SSLSocket", :sync_close= => true, :connect => true) }
+    let(:ssl_socket) { double("OpenSSL::SSL::SSLSocket", ssl_version: :SSLv23_client, :sync_close= => true, :connect => true) }
     let(:packet) { instance_double(UrfaclientPacket, clean: true, read: true, code: 192) }
     subject(:connection) do
       allow_any_instance_of(UrfaclientConnection).to receive(:get_packet).and_return(packet)
@@ -70,7 +70,15 @@ describe UrfaclientConnection do
     end
 
     describe "UrfaclientConnection#ssl_connect" do
-      it 'should enable crypto'
+      let (:connection_socket) { connection.socket }
+
+      it 'should enable crypto using connection socket' do
+        expect(connection_socket).to respond_to(:ssl_version)
+      end
+
+      it 'should open socket with correct ssl version' do
+        expect(connection_socket.ssl_version).to eq(UrfaclientConnection::SSL_VERSION)
+      end
     end
 
     describe "UrfaclientConnection#urfa_call" do
