@@ -73,6 +73,22 @@ describe UrfaclientConnection do
       it 'should enable crypto'
     end
 
+    describe "UrfaclientConnection#urfa_call" do
+      it 'should read and write to socket'
+    end
+
+    describe "UrfaclientConnection#urfa_get_data" do
+      it 'should read data from packet'
+    end
+
+    describe "UrfaclientConnection#get_packet" do
+      it 'should instantiate UrfaclientPacket'
+    end
+
+    describe "UrfaclientConnection#urfa_send_param" do
+      it 'should write some data to packet'
+    end
+
     describe "UrfaclientConnection#close" do
       it 'should call close on socket' do
         expect(ssl_socket).to receive(:close)
