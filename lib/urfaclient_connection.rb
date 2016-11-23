@@ -16,18 +16,10 @@ class UrfaclientConnection
   end
 
   def open(address, port)
-    ssl_context = OpenSSL::SSL::SSLContext.new
-    if @admin
-      ssl_context.key = OpenSSL::PKey.read(CERTIFICATE, PASSPHRASE)
-      ssl_context.verify_mode = VERIFY_PEER
-    else
-      ssl_context.ciphers = 'ADH-RC4-MD5'
-    end
     tcp_socket = TCPSocket.open(address, port)
-    @socket = OpenSSL::SSL::SSLSocket.new(tcp_socket, ssl_context)
+    @socket = OpenSSL::SSL::SSLSocket.new(tcp_socket, generate_ssl_context)
     @socket.sync_close = true
     @socket.connect
-    @socket.nil?
   end
 
   def login(login, pass, ssl = true)
@@ -121,6 +113,17 @@ class UrfaclientConnection
   end
 
   private
+
+  def generate_ssl_context
+    ssl_context = OpenSSL::SSL::SSLContext.new
+    if @admin
+      ssl_context.key = OpenSSL::PKey.read(CERTIFICATE, PASSPHRASE)
+      ssl_context.verify_mode = VERIFY_PEER
+    else
+      ssl_context.ciphers = 'ADH-RC4-MD5'
+    end
+    ssl_context
+  end
 
   def connection_error
     @error = 'connect error'
