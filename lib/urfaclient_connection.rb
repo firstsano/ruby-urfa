@@ -9,7 +9,7 @@ class UrfaclientConnection
   PASSPHRASE = 'netup'
   SSL_VERSION = :SSLv23_client
 
-  def initialize(address, port, login, pass, ssl = true, admin = false)
+  def initialize(address:, port:, login:, pass:, ssl: true, admin: false)
     @admin = admin
     return connection_error unless open(address, port)
     return login_error unless login(login, pass, true)

@@ -18,29 +18,29 @@ describe UrfaclientConnection do
     OpenStruct.new({ address: "127.0.0.1", port: 80, login: "test", pass: "test" })
   end
 
-  context "initialize behavior" do
-    it 'should not allow to call initialize without arguments' do
-      expect{ UrfaclientConnection.new }.to raise_error(ArgumentError)
+  context "on initialize" do
+    after(:each) { new_connection }
+
+    it 'should try to open connection' do
+      expect_any_instance_of(UrfaclientConnection).to receive(:open)
     end
 
-    it 'should set error and return false on unsuccessful opening' do
-      expect_any_instance_of(UrfaclientConnection).to receive(:open).and_return(false)
+    it 'should raise error on unsuccessfull connection open' do
+      allow_any_instance_of(UrfaclientConnection).to receive(:open).and_return(false)
       expect_any_instance_of(UrfaclientConnection).to receive(:connection_error)
-      new_connection
     end
 
-    it 'should set error on unsuccessful logging' do
-      expect_any_instance_of(UrfaclientConnection).to receive(:open).and_return(true)
-      expect_any_instance_of(UrfaclientConnection).to receive(:login).and_return(false)
-      expect_any_instance_of(UrfaclientConnection).to receive(:login_error)
-      new_connection
-    end
+    context 'after opening connection' do
+      before(:each) { allow_any_instance_of(UrfaclientConnection).to receive(:open).and_return(true) }
 
-    it 'should successfully create object whe no errors' do
-      expect_any_instance_of(UrfaclientConnection).to receive(:open).and_return(true)
-      expect_any_instance_of(UrfaclientConnection).to receive(:login).and_return(true)
-      new_connection
-      expect(connection).to be_an_instance_of(UrfaclientConnection)
+      it 'should try to open connection' do
+        expect_any_instance_of(UrfaclientConnection).to receive(:login)
+      end
+
+      it 'should raise error on unsuccessful authorizing' do
+        allow_any_instance_of(UrfaclientConnection).to receive(:login).and_return(false)
+        expect_any_instance_of(UrfaclientConnection).to receive(:login_error)
+      end
     end
   end
 
