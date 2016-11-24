@@ -8,7 +8,7 @@ describe UrfaclientConnection do
       address: "127.0.0.1",
       port: 80,
       login: "test",
-      pass: "test"
+      password: "test"
     }
 
     UrfaclientConnection.new(**defaults.merge(params))
@@ -64,7 +64,7 @@ describe UrfaclientConnection do
       it 'should call urfa_auth on packet authorication code' do
         allow(connection).to receive(:get_packet).and_return(packet)
         expect(connection).to receive(:urfa_auth)
-        connection.login(auth.login, auth.pass)
+        connection.login(auth.login, auth.password)
       end
     end
 
