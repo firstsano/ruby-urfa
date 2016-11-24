@@ -59,51 +59,51 @@ describe UrfaclientConnection do
         expect(connection.socket).to eq(@ssl_socket)
       end
     end
-    #
-    # describe "UrfaclientConnection#login" do
-    #   it 'should call urfa_auth on packet authorication code' do
-    #     allow(connection).to receive(:get_packet).and_return(packet)
-    #     expect(connection).to receive(:urfa_auth)
-    #     connection.login(auth.login, auth.pass)
-    #   end
-    # end
-    #
-    # describe "UrfaclientConnection#get_packet" do
-    #   it 'should return UrfaclientPacket' do
-    #     packet = connection.get_packet
-    #     expect(packet.is_a?(UrfaclientPacket)).to be_truthy
-    #   end
-    # end
-    #
-    # describe "UrfaclientConnection#ssl_connect" do
-    #   let (:connection_socket) { connection.socket }
-    #
-    #   it 'should enable crypto using connection socket' do
-    #     expect(connection_socket).to respond_to(:ssl_version)
-    #   end
-    #
-    #   it 'should open socket with correct ssl version' do
-    #     expect(connection_socket.ssl_version).to eq(UrfaclientConnection::SSL_VERSION)
-    #   end
-    # end
-    #
-    # describe "UrfaclientConnection#urfa_call" do
-    #   it 'should read and write to socket'
-    # end
-    #
-    # describe "UrfaclientConnection#urfa_get_data" do
-    #   it 'should read data from packet'
-    # end
-    #
-    # describe "UrfaclientConnection#urfa_send_param" do
-    #   it 'should write some data to packet'
-    # end
-    #
-    # describe "UrfaclientConnection#close" do
-    #   it 'should call close on socket' do
-    #     expect(ssl_socket).to receive(:close)
-    #     connection.close
-    #   end
-    # end
+
+    describe "UrfaclientConnection#login" do
+      it 'should call urfa_auth on packet authorication code' do
+        allow(connection).to receive(:get_packet).and_return(packet)
+        expect(connection).to receive(:urfa_auth)
+        connection.login(auth.login, auth.pass)
+      end
+    end
+
+    describe "UrfaclientConnection#get_packet" do
+      it 'should return UrfaclientPacket' do
+        packet = connection.get_packet
+        expect(packet.is_a?(UrfaclientPacket)).to be_truthy
+      end
+    end
+
+    describe "UrfaclientConnection#ssl_connect" do
+      let (:connection_socket) { connection.socket }
+
+      it 'should enable crypto using connection socket' do
+        expect(connection_socket).to respond_to(:ssl_version)
+      end
+
+      it 'should open socket with correct ssl version' do
+        expect(connection_socket.ssl_version).to eq(UrfaclientConnection::SSL_VERSION)
+      end
+    end
+
+    describe "UrfaclientConnection#urfa_call" do
+      it 'should read and write to socket'
+    end
+
+    describe "UrfaclientConnection#urfa_get_data" do
+      it 'should read data from packet'
+    end
+
+    describe "UrfaclientConnection#urfa_send_param" do
+      it 'should write some data to packet'
+    end
+
+    describe "UrfaclientConnection#close" do
+      it 'should call close on socket' do
+        expect(ssl_socket).to receive(:close)
+        connection.close
+      end
+    end
   end
 end
