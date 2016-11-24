@@ -14,14 +14,12 @@ describe UrfaclientConnection do
     UrfaclientConnection.new(**defaults.merge(params))
   end
 
-  def mock_instantion_of(class_object)
-    double_object = instance_double class_object
-    allow(class_object).to receive(:new).and_return double_object
-    double_object
-  end
-
   def mocks_instantion_of(*class_objects)
-    class_objects.map { |o| mock_instantion_of o }
+    class_objects.map do |o|
+      double_object = double(o).as_null_object
+      allow(o).to receive(:new).and_return double_object
+      double_object
+    end
   end
 
   context "on initialize" do
@@ -53,19 +51,12 @@ describe UrfaclientConnection do
   context "methods" do
     before(:each) do
       @tcp_socket, @ssl_socket = mocks_instantion_of TCPSocket, OpenSSL::SSL::SSLSocket
-      allow(@ssl_socket).to receive(:sync_close=)
-      allow(@ssl_socket).to receive(:connect)
     end
     subject(:connection) { new_connection }
 
     describe "UrfaclientConnection#open" do
-      it 'should generate ssl context' do
-        expect_any_instance_of(UrfaclientConnection).to receive(:generate_ssl_context)
-        connection
-      end
-
       it 'should set up connection socket' do
-        expect(connection.socket).not_to be_falsey
+        expect(connection.socket).to eq(@ssl_socket)
       end
     end
     #
